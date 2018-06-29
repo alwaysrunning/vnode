@@ -3,11 +3,13 @@
 		<hd :bus="bus"></hd>
         <el-col :span="24" class="index-bd">
 			<left :bus="bus"></left>
-			<el-col :span="24">
-				<transition name="fade" mode="out-in">
-					<router-view></router-view>
-				</transition>
-			</el-col>
+			<section class="mod-section">
+				<el-col :span="24">
+					<transition name="fade" mode="out-in">
+						<router-view></router-view>
+					</transition>
+				</el-col>
+            </section>
         </el-col>
     </el-row>
 </template>
@@ -39,6 +41,12 @@ export default
 	.index-bd{
 		width: 100%;
 		height: 100%;
+		display: flex;
+		.mod-section{
+			flex: 1;
+			margin: 20px;
+			border-radius: 5px;
+		}
 	}
 }
 .fade-enter-active, .fade-leave-active {
