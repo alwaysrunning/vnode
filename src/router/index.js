@@ -8,21 +8,29 @@ export default new Router({
     routes: [
 		{
 			path: '/',
-			redirect: '/index'
+			redirect: '/index',
+			hidden:true
 		},
 		{
 			path: '/login',
-			name: 'login',
-			component: resolve => require(['@/components/conf/login/index.vue'], resolve)
+			name: '登录',
+			iconCls:'el-icon-menu',
+			component: resolve => require(['@/components/conf/login/index.vue'], resolve),
+			hidden:true
 		},
 		{
 			path: '/index',
 			redirect:'/index/blog',
-			name: 'index',
+			name: '博客',
+			iconCls:'el-icon-document',
 			component: resolve => require(['@/components/conf/index/index.vue'], resolve),
 			children:[{
 				path:"blog",
-				name:"博客",
+				name:"写博客",
+				component: resolve => require(['@/components/conf/blog/index.vue'], resolve)
+			},{
+				path:"list",
+				name:"博客列表",
 				component: resolve => require(['@/components/conf/blog/index.vue'], resolve)
 			}]
 		}
