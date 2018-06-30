@@ -32,20 +32,24 @@ export default
 </script>
 <style scope="scope" lang="scss">
 .mod-index{
-	position: fixed;
+	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	width: 100%;
 	.index-bd{
+		position: absolute;
+		top: 60px;
+		bottom: 0;
 		width: 100%;
-		height: 100%;
 		display: flex;
+		overflow:hidden;
 		.mod-section{
 			flex: 1;
-			margin: 20px;
+			padding: 20px 30px;
 			border-radius: 5px;
+			overflow-y:scroll;
 		}
 	}
 }

@@ -10,8 +10,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/sass/_reset.scss';
 import './assets/sass/_common.scss';
 
-Vue.config.productionTip = false
+import VueQuillEditor from 'vue-quill-editor'
+Vue.use(VueQuillEditor);
 Vue.use(ElementUI)
+
 Object.keys(filters).forEach(k => Vue.filter(k, filters[k]));
 
 new Vue({

@@ -53,6 +53,8 @@ export default
 	background: #fff;
 	box-shadow: 0px 1px 4px rgba(0,0,0, 0.3);
 	overflow: hidden;
+	position: absolute;
+	z-index: 11;
 	.logo {
 		float: left;
 		width:201px;

@@ -1,5 +1,5 @@
 <template>
- <el-menu @select="handleSelect" :default-active="acitiveMenu" class="mod-left" :collapse="collapsed" :unique-opened="unique" router>
+ <el-menu @select="handleSelect" :default-active="activeMenu" class="mod-left" :collapse="collapsed" :unique-opened="unique" router>
 	 <items  :model='item' v-if="!item.hidden" v-for='item in $router.options.routes' :key="item.path"></items>
 </el-menu>
 </template>
@@ -10,7 +10,7 @@ export default {
 		return {
             unique:true,
 			collapsed:false,
-            acitiveMenu:''
+            activeMenu:''
 		}
 	},
 
@@ -19,14 +19,26 @@ export default {
     },
 
 	mounted(){
-        this.acitiveMenu=this.$route.path;
+        this.activeMenu=this.$route.path;
     },
     
 	methods: {
         handleSelect(index){
-            this.acitiveMenu = index
+            this.activeMenu = index
+        },
+
+        activation(){  // 激活左侧导航栏
+            let path = this.$route.path
+            let arr = path.split('/')
+            this.activeMenu = `/${arr[1]}/list`
         }
-	}
+    },
+    
+    watch:{
+        $route(){
+            this.activation()
+        }
+    }
 }
 </script>
 <style scoped lang="scss">
