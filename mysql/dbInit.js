@@ -18,7 +18,7 @@ const blog = `CREATE TABLE IF NOT EXISTS blog (
     description varchar(255) NOT NULL COMMENT '博客描述',
     content longtext NOT NULL,
     type varchar(36) NOT NULL,
-    url varchar(255) NOT NULL,
+    creative mediumint(6) NOT NULL,
     create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (blog_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
@@ -52,13 +52,13 @@ var init = function(){
             //     }
             // })
 
-            sql.query('insert into blog(title, description, content, type, url) VALUES(?,?,?,?,?)',['title','description','content','技术','www'], function (err) {
-                if(err){
-                    console.log(err)
-                }else{
-                    console.log('初始化博客')
-                }   
-            })
+            // sql.query('insert into blog(title, description, content, type, url) VALUES(?,?,?,?,?)',['title','description','content','技术','www'], function (err) {
+            //     if(err){
+            //         console.log(err)
+            //     }else{
+            //         console.log('初始化博客')
+            //     }   
+            // })
 
         }
     })

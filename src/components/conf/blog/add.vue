@@ -9,8 +9,8 @@
 		</el-form-item>
 		<el-form-item label="文章类型" prop="type">
 			<el-select v-model="ruleForm.type" placeholder="请选择博客类型">
-				<el-option label="技术" value="1"></el-option>
-				<el-option label="文学" value="2"></el-option>
+				<el-option label="技术" value="技术"></el-option>
+				<el-option label="文学" value="文学"></el-option>
 			</el-select>
 		</el-form-item>
 		<el-form-item label="是否原创">
@@ -43,7 +43,7 @@ export default {
 			ruleForm: {
 				title: '',
 				description: '',
-				type: '1',
+				type: '技术',
 				creative: false,
 				content: ''
 			},
@@ -63,19 +63,35 @@ export default {
             
         },
 
+		async save(){
+			let params = Object.assign({},this.ruleForm)
+			let res = await this.$ajax.post("/api/save",params)
+			if(res.error==0){
+				this.$message.success(res.msg)
+				this.$router.push({name:'我的博客'});
+			}
+		},
+		
+		async getInfo(id){
+			let params = Object.assign({},{id:id})
+			let res = await this.$ajax.get("/api/getInfo",params)
+			if(res.error==0){
+				this.ruleForm = res.data
+			}
+		},
+
 		submitForm(formName) {
 			if(!this.ruleForm.content){
 				this.$message.error("大爷，您还没写博客呢")
 				return
 			}
 			this.$refs[formName].validate((valid) => {
-				console.log(this.ruleForm)
-			if (valid) {
-				alert('submit!');
-			} else {
-				console.log('error submit!!');
-				return false;
-			}
+				if (valid) {
+					this.save()
+				} else {
+					console.log('error submit!!');
+					return false;
+				}
 			});
 		},
 		resetForm() {
@@ -84,6 +100,10 @@ export default {
 	},
 	mounted(){
 		this.isShowRichTextEditor = true
+		let id = this.$route.query.id
+		if(id){
+
+		}
 	}
 }
 </script>
