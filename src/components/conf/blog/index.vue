@@ -38,7 +38,7 @@
 			<el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
 			<el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
 			<el-table-column prop="type" label="类型" show-overflow-tooltip></el-table-column>
-			<el-table-column prop="time" label="发布时间" show-overflow-tooltip></el-table-column>
+			<el-table-column prop="create_time" label="发布时间" show-overflow-tooltip></el-table-column>
 			<el-table-column prop="url" label="跳转链接" show-overflow-tooltip>
 				<template slot-scope="scope">
 					<a v-text="scope.row.url" :href="scope.row.url" target="_blank"></a>
@@ -95,7 +95,9 @@ export default {
 		onEdit(id){
 			this.$router.push('/index/add?id='+id);
 		},
-		onDelete(id){},
+		onDelete(id){
+			
+		},
 
 		onBatchDeletion(){
 			if(this.multipleSelection.length==0){
@@ -112,7 +114,7 @@ export default {
 				pageSize: this.pageSize,
 				currentPage:val||this.currentPage
 			},this.searchs)
-			let res = await this.$ajax.get("/api/data",params)
+			let res = await this.$ajax.get("/api/list",params)
 			this.list = res.data
 		},
 
