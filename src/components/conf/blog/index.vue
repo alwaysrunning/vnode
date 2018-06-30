@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
 	data() {
 		return {
@@ -85,25 +86,44 @@ export default {
 		};
 	},
     methods: {
-		onSearch(){},
-		onAdd(){
-			this.$router.push({name:'添加博客', params:{}});
+		onSearch(){
+			this.getList()
 		},
-		onEdit(){},
-		onDelete(){},
-		onBatchDeletion(){},
-		handleCurrentChange(){},
+		onAdd(){
+			this.$router.push('/index/add');
+		},
+		onEdit(id){
+			this.$router.push('/index/add?id='+id);
+		},
+		onDelete(id){},
+
+		onBatchDeletion(){
+			if(this.multipleSelection.length==0){
+				this.$message.error('请至少选择一篇博客')
+			}
+		},
+
 		handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-		// handleCurrentChange: _.debounce(function(v){
-        //     this.currentPage = v;
-        //     this.onSearch();
-        // },300),
+			this.multipleSelection = val;
+		},
+
+		async getList(val){
+			let params = Object.assign({},{
+				pageSize: this.pageSize,
+				currentPage:val||this.currentPage
+			},this.searchs)
+			let res = await this.$ajax.get("/api/data",params)
+			this.list = res.data
+		},
+
+		handleCurrentChange: _.debounce(function(v){
+            this.currentPage = v
+			this.getList(v)
+        },200),
     },
 
 	mounted(){
-		
+		this.getList()
 	}
 }
 </script>

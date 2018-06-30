@@ -49,14 +49,14 @@ Vue.prototype.$ajax = {
         return axios.get(url,{
             params:param||{}
         }).then(res=>{
-            return Promise.resolve(res)
+            return Promise.resolve(res.data)
         })
     },
     post(url, data){
         //let param = querystring.stringify(data)
         let param = data  // nodejs
         return axios.post(url, param).then(res=>{
-            return Promise.resolve(res)
+            return Promise.resolve(res.data)
         })
         // return new Promise((resolve, reject)=>{
         //     axios.get(url,{
