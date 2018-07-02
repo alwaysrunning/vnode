@@ -39,15 +39,10 @@
 			<el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
 			<el-table-column prop="type" label="类型" show-overflow-tooltip></el-table-column>
 			<el-table-column prop="create_time" label="发布时间" show-overflow-tooltip></el-table-column>
-			<el-table-column prop="url" label="跳转链接" show-overflow-tooltip>
-				<template slot-scope="scope">
-					<a v-text="scope.row.url" :href="scope.row.url" target="_blank"></a>
-				</template>
-			</el-table-column>
 			<el-table-column label="操作" fixed="right" min-width="120">
 				<template slot-scope="scope">
-					<span class="operate cursor edit" @click="onEdit(scope.row.id)">编辑</span>
-					<span class="operate del cursor" @click="onDelete(scope.row.id)" >删除</span>
+					<span class="operate cursor edit" @click="onEdit(scope.row.blog_id)">编辑</span>
+					<span class="operate del cursor" @click="onDelete(scope.row.blog_id)" >删除</span>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -95,8 +90,13 @@ export default {
 		onEdit(id){
 			this.$router.push('/index/add?id='+id);
 		},
-		onDelete(id){
-			
+
+		async onDelete(id){
+			let res = await this.$ajax.post("/api/delete",{id:id})
+			if(res.error==0){
+				this.$message.success(res.msg)
+				this.getList()
+			}
 		},
 
 		onBatchDeletion(){

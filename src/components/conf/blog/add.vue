@@ -38,6 +38,7 @@ export default {
 	},
     data() {
 		return {
+			id:this.$route.query.id || '',
 			isShowRichTextEditor:false,
 			editorOption:{},
 			ruleForm: {
@@ -64,7 +65,7 @@ export default {
         },
 
 		async save(){
-			let params = Object.assign({},this.ruleForm)
+			let params = Object.assign({id:this.id},this.ruleForm)
 			let res = await this.$ajax.post("/api/save",params)
 			if(res.error==0){
 				this.$message.success(res.msg)
@@ -76,7 +77,13 @@ export default {
 			let params = Object.assign({},{id:id})
 			let res = await this.$ajax.get("/api/getInfo",params)
 			if(res.error==0){
+				this.isShowRichTextEditor = true
 				this.ruleForm = res.data
+				if(this.ruleForm.creative == 1){
+					this.ruleForm.creative = true
+				}else{
+					this.ruleForm.creative = false
+				}
 			}
 		},
 
@@ -99,11 +106,11 @@ export default {
 		}
 	},
 	mounted(){
-		this.isShowRichTextEditor = true
-		let id = this.$route.query.id
-		if(id){
-
+		if(this.id){
+			this.getInfo(this.id)
+			return
 		}
+		this.isShowRichTextEditor = true
 	}
 }
 </script>

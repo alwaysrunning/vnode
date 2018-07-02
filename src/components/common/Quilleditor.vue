@@ -3,7 +3,8 @@
         <quill-editor v-model="content"
                      ref="myTextEditor"
                      :options="editorOption"
-                     @change="onChange">
+                     @change="onChange"
+                     >
         </quill-editor>
     </div>
 </template>

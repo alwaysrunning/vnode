@@ -2,7 +2,7 @@
 <div class="form">
 	<div class="title">{{title}}</div>
 	<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="ruleForm">
-		<el-form-item label="年龄" prop="name">
+		<el-form-item label="管理员" prop="name">
 			<el-input v-model.number="ruleForm.name"></el-input>
 		</el-form-item>
 		<el-form-item label="密码" prop="pass">
@@ -49,23 +49,26 @@ export default {
     methods: {
 		submitForm(formName) {
 			this.$refs[formName].validate((valid) => {
-			if (valid) {
-				alert('submit!');
-			} else {
-				console.log('error submit!!');
-				return false;
-			}
+				if (valid) {
+					this.login()
+				} else {
+					console.log('error submit!!');
+					return false;
+				}
 			});
 		},
-		async getList(){
-			let res = await this.$ajax.get('/api/data')
-			console.log(res)
-			console.log(111)
+
+		async login(){
+			let params = Object.assign({},this.ruleForm)
+			let res = await this.$ajax.post('/api/login', params)
+			if(res.error==0){
+				this.$router.push({name:'我的博客', params:{}});
+			}
 		}
     },
 
 	mounted(){
-		this.getList()
+
 	}
 }
 </script>
