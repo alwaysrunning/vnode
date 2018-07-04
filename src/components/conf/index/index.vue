@@ -30,7 +30,7 @@ export default
 	}
 }
 </script>
-<style scope="scope" lang="scss">
+<style scoped lang="scss">
 .mod-index{
 	position: absolute;
 	top: 0;
