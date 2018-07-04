@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 
 app.use(compression()); 
 
-//app.use(express.static(__dirname + '/images'))
+
 app.use('/api', router)
 
 app.use(function(req,res,next){
@@ -33,7 +33,7 @@ app.use(function(req,res,next){
 
 module.exports = app
 
-var server = app.listen(3000, function(){
+var server = app.listen(49999, function(){
     var host = server.address().address
     var port = server.address().port
     console.log(host,port,111)
