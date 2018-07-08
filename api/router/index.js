@@ -13,6 +13,11 @@ function handleTime(rows){
 }
 
 router.get('/list', function(req, res, next){
+    res.json({
+        msg:'hello world',
+        error:0,
+    })
+    return
     sql.query('select * from blog order by create_time DESC', function(err, rows){
         if(err){
             console.log(err)
