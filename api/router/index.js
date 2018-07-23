@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const moment = require('moment');
+const logger = require('../log4js/index').logger();
 
 var sql = require('../../mysql/connect')
 
@@ -110,11 +111,13 @@ router.post('/delete', function(req, res, next){
 router.post('/login', function(req, res, next){
     sql.query(`select * from user where name = '${req.body.name}' and password = '${req.body.password}'`, function(err, rows){
         if(err){
+            console.error(err)
             res.json({
                 msg:'登录失败',
                 error:-100
             })
         }else{
+            console.log("返回结果==="+rows)
             res.json({
                 msg:'登录成功',
                 error:0

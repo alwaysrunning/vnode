@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var compression = require('compression');
 var router = require('./router/index');
 var app = express()
+var log4js = require('./log4js/index');
 
 app.all('*', function(req,res,next){
     res.header('Access-Control-Allow-Origin','*')
@@ -19,6 +20,7 @@ app.use(bodyParser.json())
 
 app.use(compression()); 
 
+log4js.use(app)
 
 app.use('/api', router)
 
@@ -36,5 +38,4 @@ module.exports = app
 var server = app.listen(49999, function(){
     var host = server.address().address
     var port = server.address().port
-    console.log(host,port,111)
 })
