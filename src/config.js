@@ -1,9 +1,9 @@
 let url;
 
 if(process.env.NODE_ENV === 'production'){
-    url = "http://www.haitaoway.cn:49999"
+    url = "http://116.85.25.126:8082"
 }else{
-    url = "http://localhost:49999"
+    url = "http://localhost:8082"
 }
 
 export { url }
