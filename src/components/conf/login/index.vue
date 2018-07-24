@@ -5,8 +5,8 @@
 		<el-form-item label="管理员" prop="name">
 			<el-input v-model.number="ruleForm.name"></el-input>
 		</el-form-item>
-		<el-form-item label="密码" prop="pass">
-			<el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
+		<el-form-item label="密码" prop="password">
+			<el-input type="password" v-model="ruleForm.password" auto-complete="off"></el-input>
 		</el-form-item>
 		<el-form-item>
 			<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -33,11 +33,11 @@ export default {
 		return {
 			title:'博客后台管理系统',
 			ruleForm: {
-				pass: '',
+				password: '',
 				name: ''
 			},
 			rules: {
-				pass: [
+				password: [
 					{ validator: validatePass, trigger: 'blur' }
 				],
 				name: [
@@ -63,6 +63,8 @@ export default {
 			let res = await this.$ajax.post('/api/login', params)
 			if(res.error==0){
 				this.$router.push({name:'我的博客', params:{}});
+			}else{
+				this.$message.error(res.msg)
 			}
 		}
     },

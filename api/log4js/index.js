@@ -1,5 +1,5 @@
 var log4js = require("log4js")
-
+var path = require("path")
 var levels = {
     'trace': log4js.levels.TRACE,
     'debug': log4js.levels.DEBUG,
@@ -17,7 +17,7 @@ log4js.configure({
         },
         {
             type:"dateFile",
-            filename:"logs/",
+            filename:path.join(__dirname,"logs/"),
             pattern:"yyyy-MM-dd.log",
             alwaysIncludePattern:true,
             maxLoginSize:1024,

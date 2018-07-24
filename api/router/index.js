@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router();
 const moment = require('moment');
 const logger = require('../log4js/index').logger();
-
-var sql = require('../../mysql/connect')
+const sql = require('../../mysql/connect');
+const jwt = require('jsonwebtoken')
+const secret = 'YANGHAITAO'
 
 // 处理时间戳
 function handleTime(rows){
@@ -13,7 +14,32 @@ function handleTime(rows){
     return rows
 }
 
-router.get('/list', function(req, res, next){
+// token 认证
+function authToken(req, res, next){
+    var Cookies = {};
+    req.headers.cookie && req.headers.cookie.split(';').forEach(function( Cookie ) {
+        var parts = Cookie.split('=');
+        Cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+    });
+    var token = Cookies.token
+    if(token){
+        jwt.verify(token, secret, (error, decoded)=>{
+            if(error){
+                return res.json({ success: false, message: 'token信息错误.' });
+            }else{
+                req.decoded = decoded
+                next()
+            }
+        })
+    }else{
+        return res.status(403).send({
+            success: false,
+            message: '没有提供token！'
+        })
+    }
+}
+
+router.get('/list', authToken, function(req, res, next){
     sql.query('select * from blog order by create_time DESC', function(err, rows){
         if(err){
             console.log(err)
@@ -109,20 +135,31 @@ router.post('/delete', function(req, res, next){
 })
 
 router.post('/login', function(req, res, next){
-    sql.query(`select * from user where name = '${req.body.name}' and password = '${req.body.password}'`, function(err, rows){
-        if(err){
-            console.error(err)
+    //let querySql = `select * from user where name = '${req.body.name}' and password = '${req.body.password}'`
+    let querySql = `select * from user`
+    sql.query(querySql, function(err, rows){
+        if(err || rows.length==0){
             res.json({
                 msg:'登录失败',
                 error:-100
             })
         }else{
-            console.log("返回结果==="+rows)
+            var token = jwt.sign(Object.assign({},rows[0]), secret, {
+                expiresIn:60*60*24  // 24小时
+            })
+            //res.cookie('token',token,{httpOnly: false})
+            // cookie 必须在 json之前
+            res.cookie('token', token);
             res.json({
                 msg:'登录成功',
-                error:0
+                error:0,
+                token:token,
+                row:rows[0]
             })
         }
     })
 })
+
+ 
+
 module.exports = router
