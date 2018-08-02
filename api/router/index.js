@@ -135,8 +135,8 @@ router.post('/delete', function(req, res, next){
 })
 
 router.post('/login', function(req, res, next){
-    //let querySql = `select * from user where name = '${req.body.name}' and password = '${req.body.password}'`
-    let querySql = `select * from user`
+    let querySql = `select * from user where name = '${req.body.name}' and password = '${req.body.password}'`
+    //let querySql = `select * from user`
     sql.query(querySql, function(err, rows){
         if(err || rows.length==0){
             res.json({
