@@ -72,19 +72,19 @@
 <script id="listCnt" type="text/html">
 {{each list as value i}}
     {{ if value.pic }}
-    <li class="hasPic">
+    <li class="hasPic" data-id="{{value.blog_id}}">
         <div class="title">{{ value.title }}</div>
-        <div class="describe">{{ value.describe }}</div>
+        <div class="describe">{{ value.description }}</div>
         <div class="zan">
             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-            <span class="num">{{value.stars}}</span>
+            <span class="num">{{value.stars }}</span>
         </div>
         <div class="pic"><img src="{{value.pic}}"></div>
     </li>
     {{ else }}
-    <li>
+    <li data-id="{{value.blog_id}}">
         <div class="title">{{ value.title }}</div>
-        <div class="describe">{{ value.describe }}</div>
+        <div class="describe">{{ value.description }}</div>
         <div class="zan">
             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
             <span class="num">{{value.stars}}</span>
@@ -105,34 +105,53 @@
 <script type="text/javascript">
     $(function(){
         // 左边列表渲染
-        var data = {
-            list: [{
-                stars:12,
-                pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
-                title:"是的发生的",
-                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
-            },{
-                stars:12,
-                pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
-                title:"是的发生的",
-                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
-            },{
-                stars:12,
-                pic:"",
-                title:"是的发生的",
-                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
-            },{
-                stars:12,
-                pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
-                title:"是的发生的",
-                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
-            }]
-        };
+        // var data = {
+        //     list: [{
+        //         stars:12,
+        //         pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
+        //         title:"是的发生的",
+        //         describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+        //     },{
+        //         stars:12,
+        //         pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
+        //         title:"是的发生的",
+        //         describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+        //     },{
+        //         stars:12,
+        //         pic:"",
+        //         title:"是的发生的",
+        //         describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+        //     },{
+        //         stars:12,
+        //         pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
+        //         title:"是的发生的",
+        //         describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+        //     }]
+        // };
+
+        $.ajax({
+            type:"get",
+            url:"http://localhost:8082/api/list",
+            data:{},
+            success: function(res){
+                if(res.data){
+                    let list = res.data;
+                    var html = template('listCnt', {list:list});
+                    $('#list').html(html);
+                }
+            },
+            error: function(){
+
+            }
+        })
         
-        //return
-        var html = template('listCnt', data);
-        $('#list').html(html);
         
+        $("#list").delegate("li", "click", function(e){
+            var id = $(this).data("id");
+            window.location.href = ""
+        })
+
+
         // 右边分类渲染
         var arr = ["febb50","f69581","f4e0bd","c1e4de","b7d6ec"]  // 背景颜色
 

@@ -39,7 +39,23 @@ function authToken(req, res, next){
     }
 }
 
-router.get('/list', authToken, function(req, res, next){
+
+// router.get('/list', authToken, function(req, res, next){
+//     sql.query('select * from blog order by create_time DESC', function(err, rows){
+//         if(err){
+//             console.log(err)
+//             next(err)
+//         }else{
+//             res.json({
+//                 msg:'',
+//                 error:0,
+//                 data:handleTime(rows)
+//             })
+//         }
+//     })
+// })
+
+router.get('/list', function(req, res, next){
     sql.query('select * from blog order by create_time DESC', function(err, rows){
         if(err){
             console.log(err)

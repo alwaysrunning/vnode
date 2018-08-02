@@ -23,7 +23,7 @@
         </div>
 
         <div class="mod-ctn">
-            <div class="title">每周分享第 15 期</div>
+            <div class="title" id="title">每周分享第 15 期</div>
             <div class="authorInfo">作者：<span>阮一峰</span></div>
             <div class="authorInfo">日期：<span>2018年7月27日</span></div>
             <div class="content" id="content">很多网友问，《每周分享》的来源是什么，你从哪里得知这些消息？</div>
@@ -42,9 +42,21 @@
 
 
 <script type="text/javascript">
-    $(function(){
-       
-        
+    $(function(){ 
+        $.ajax({
+            type:"get",
+            url:"http://localhost:8082/api/getInfo",
+            data:{id:8},
+            success: function(res){
+                if(res.error==0){
+                    var data = res.data
+                    $("#title").html(data.title)
+                    $("#content").html(data.content)
+                }
+            },
+            error: function(){
 
+            }
+        })
     })
 </script>
