@@ -1,27 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>首页展示</title>
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"
-    />
-
-    <meta name="renderer" content="webkit" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link href="./reset.css" rel="stylesheet" type="text/css">
-    <link href="./master.css" rel="stylesheet" type="text/css">
-</head>
-
-<body>
-    <div class="mod-header">
-        <div class="name">杨海涛的网络日志</div>
-        <div class="search">
-            <input type="text" name="q" id="q" value="" autocomplete="off" placeholder="搜索" class="search-input">
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>博客</title>
+        <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link href="./reset.css" rel="stylesheet" type="text/css">
+        <link href="./index.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="mod-header">
+            <div class="header">
+                <div class="name">杨海涛的网络日志</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
         </div>
-    </div>
-</body>
 
+        <div class="mod-ctn">
+            <ul class="list" id="list">
+                <li>
+                    <div class="title">是的发生的</div>
+                    <div class="describe">的郭德纲阿斯蒂芬阿斯蒂芬发生实
+                        打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的
+                        郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生
+                        实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿
+                        斯蒂芬阿斯蒂芬发生实打实地方是</div>
+                    <div class="zan">
+                        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                        <span class="num">13</span>
+                    </div>
+                </li>
+                <li class="hasPic">
+                    <div class="title">是的发生的</div>
+                    <div class="describe">的郭德纲阿斯蒂芬阿斯蒂芬发生实
+                        打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的
+                        郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生
+                        实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿
+                        斯蒂芬阿斯蒂芬发生实打实地方是</div>
+                    <div class="zan">
+                        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                        <span class="num">13</span>
+                    </div>
+                    <div class="pic"><img src=""></div>
+                </li>
+            </ul>
+            <div class="classify" id="classify">
+                <a>斯蒂芬阿斯蒂芬发生实打实地方是</a>
+                <a>斯蒂芬阿斯蒂芬发生实打实地方是</a>
+                <a>斯蒂芬阿斯蒂芬发生实打实地方是</a>
+                <a>斯蒂芬阿斯蒂芬发生实打实地方是</a>
+                <a>斯蒂芬阿斯蒂芬发生实打实地方是</a>
+            </div>
+        </div>
+
+        <div class="mod-footer">
+            <span>邮箱：178224406@qq.com</span>|<span>GitHub：https://github.com/alwaysrunning</span>
+        </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://cdn.staticfile.org/artTemplate.js/3.0.1/template.js"></script>
+    </body>
 </html>
+
+
+<script id="listCnt" type="text/html">
+{{each list as value i}}
+    {{ if value.pic }}
+    <li class="hasPic">
+        <div class="title">{{ value.title }}</div>
+        <div class="describe">{{ value.describe }}</div>
+        <div class="zan">
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+            <span class="num">{{value.stars}}</span>
+        </div>
+        <div class="pic"><img src="{{value.pic}}"></div>
+    </li>
+    {{ else }}
+    <li>
+        <div class="title">{{ value.title }}</div>
+        <div class="describe">{{ value.describe }}</div>
+        <div class="zan">
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+            <span class="num">{{value.stars}}</span>
+        </div>
+    </li>
+    {{/if}}
+{{/each}}
+</script>
+
+<script id="classifyList" type="text/html">
+{{each classList as item i}}
+    <a href="" style="background:{{item.color}}">
+        {{ item.val }} 
+    </a>
+{{/each}}
+</script>
+
+<script type="text/javascript">
+    $(function(){
+        // 左边列表渲染
+        var data = {
+            list: [{
+                stars:12,
+                pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
+                title:"是的发生的",
+                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+            },{
+                stars:12,
+                pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
+                title:"是的发生的",
+                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+            },{
+                stars:12,
+                pic:"",
+                title:"是的发生的",
+                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+            },{
+                stars:12,
+                pic:"http://img4.bbgstatic.com/15f7346d77e_2_13e5ae22d68891da581bc50297d23268_2000x2000.png!l2",
+                title:"是的发生的",
+                describe:"的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿斯蒂芬阿斯蒂芬发生实打实地方是的郭德纲阿"
+            }]
+        };
+        
+        //return
+        var html = template('listCnt', data);
+        $('#list').html(html);
+        
+        // 右边分类渲染
+        var arr = ["febb50","f69581","f4e0bd","c1e4de","b7d6ec"]  // 背景颜色
+
+        var classList = [{
+            val:"1111",
+            color:"#c1e4de"
+        },{
+            val:"2222",
+            color:"#b7d6ec"
+        }]
+        var classListHtml = template('classifyList', {classList:classList});
+        $('#classify').html(classListHtml);
+    })
+</script>
