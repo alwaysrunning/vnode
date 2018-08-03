@@ -1,7 +1,7 @@
 {
-    "host":"192.161.176.162",
-    "user":"haitaowa_test",
-    "password":"hunanyht287",
-    "database":"haitaowa_test",
+    "host":"116.85.25.126",
+    "user":"root",
+    "password":"yanghaitao",
+    "database":"blog",
     "port":"3306"
 }
