@@ -7,6 +7,28 @@
 		<el-form-item label="描述">
 			<el-input v-model="ruleForm.description"></el-input>
 		</el-form-item>
+		<!-- <el-form-item label="图片" prop="picture">
+			<el-col :span="5">
+				<el-upload
+				class="avatar-uploader"
+				action="//active.yunhou.com/api/image/upload"
+				:data="fileParams"
+				:with-credentials="true"
+				:before-upload="beforeAvatarUpload"
+				:show-file-list="false"
+				:on-success="handleAvatarSuccess"
+				:on-error="handleAvatarError">
+				<img v-if="formEntity.ad_img" :src="formEntity.ad_img" class="avatar">
+				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
+			</el-col>
+			<el-col :span="3">
+				<div class="changePic">点击图片可替换</div>
+			</el-col>
+		</el-form-item> -->
+		<el-form-item label="图片" prop="picture">
+			<input @change='add_img'  type="file">
+        </el-form-item>
 		<el-form-item label="文章类型" prop="type">
 			<el-select v-model="ruleForm.type" placeholder="请选择博客类型">
 				<el-option label="技术" value="技术"></el-option>
@@ -59,10 +81,28 @@ export default {
 		};
 	},
 	methods: {
-		getRichTextGoodsInfo:function(result){
+		getRichTextGoodsInfo(result){
             this.ruleForm.content=result.content;
             
-        },
+		},
+		
+		add_img(event){
+			let self = this
+			let reader = new FileReader();
+			let img = event.target.files[0];
+			reader.readAsDataURL(img)
+			reader.onloadend = function(){
+				self.upload(reader.result)
+			}
+		},
+
+		async upload(result){
+			let res = await this.$ajax.post("/api/upload",{img:result})
+			if(res.error==0){
+				this.$message.success(res.msg)
+				console.log(res.data) // 获取图片路径
+			}
+		},
 
 		async save(){
 			let params = Object.assign({id:this.id},this.ruleForm)

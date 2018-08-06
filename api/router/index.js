@@ -5,6 +5,7 @@ const logger = require('../log4js/index').logger();
 const sql = require('../../mysql/connect');
 const jwt = require('jsonwebtoken')
 const secret = 'YANGHAITAO'
+const fs = require('fs')
 
 // 处理时间戳
 function handleTime(rows){
@@ -176,6 +177,39 @@ router.post('/login', function(req, res, next){
     })
 })
 
- 
+router.post('/upload', function(req, res, next){
+    let imgData = req.body.img
+    let base64Data = imgData.replace(/^data:image\/\w+;base64,/, ' ')
+    let dataBuffer = new Buffer(base64Data, 'base64')
+    let time = new Date().getTime()
+    if (!fs.existsSync(__dirname + '/images/')) {
+        fs.mkdirSync(__dirname + '/images/');
+    }
+    if (!fs.existsSync(__dirname + '/images/upload/')) {
+            fs.mkdirSync(__dirname + '/images/upload/');
+    }
+    fs.writeFile(__dirname + '/images/upload/' + time + '.png', dataBuffer, function (err) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send({ error: 0, msg: '保存成功', data: 'http://' + getIp() + ':3000/upload/' + time + '.png'})
+        }
+    })
+})
 
+// 获取本机ip地址
+function getIp () {
+    var os = require('os'),
+        iptable = {},
+        ifaces = os.networkInterfaces()
+    for (var dev in ifaces) {
+        ifaces[dev].forEach(function (details, alias) {
+            if ((details.family == 'IPv4') && (details.internal == false)) {
+            // iptable[dev+(alias?':'+alias:'')]=details.address
+            iptable['localIP'] = details.address
+            }
+        })
+    }
+    return iptable.localIP
+}
 module.exports = router
