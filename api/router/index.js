@@ -6,6 +6,7 @@ const sql = require('../../mysql/connect');
 const jwt = require('jsonwebtoken')
 const secret = 'YANGHAITAO'
 const fs = require('fs')
+const path = require('path')
 
 // 处理时间戳
 function handleTime(rows){
@@ -182,17 +183,20 @@ router.post('/upload', function(req, res, next){
     let base64Data = imgData.replace(/^data:image\/\w+;base64,/, ' ')
     let dataBuffer = new Buffer(base64Data, 'base64')
     let time = new Date().getTime()
-    if (!fs.existsSync(__dirname + '/images/')) {
-        fs.mkdirSync(__dirname + '/images/');
+
+    let frontPath =path.join(__dirname,'../../../../')
+    console.log(frontPath,8888)
+    if (!fs.existsSync(frontPath + '/images/')) {
+        fs.mkdirSync(frontPath + '/images/');
     }
-    if (!fs.existsSync(__dirname + '/images/upload/')) {
-            fs.mkdirSync(__dirname + '/images/upload/');
+    if (!fs.existsSync(frontPath + '/images/upload/')) {
+            fs.mkdirSync(frontPath + '/images/upload/');
     }
-    fs.writeFile(__dirname + '/images/upload/' + time + '.png', dataBuffer, function (err) {
+    fs.writeFile(frontPath + '/images/upload/' + time + '.png', dataBuffer, function (err) {
         if (err) {
             res.send(err)
         } else {
-            res.send({ error: 0, msg: '保存成功', data: 'http://' + getIp() + ':3000/upload/' + time + '.png'})
+            res.send({ error: 0, msg: '保存成功', data: 'http://116.85.25.126:8888/images/upload/' + time + '.png'})
         }
     })
 })

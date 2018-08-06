@@ -100,7 +100,7 @@ export default {
 			let res = await this.$ajax.post("/api/upload",{img:result})
 			if(res.error==0){
 				this.$message.success(res.msg)
-				console.log(res.data) // 获取图片路径
+				console.log(res.data, " 获取图片路径") // 获取图片路径
 			}
 		},
 
