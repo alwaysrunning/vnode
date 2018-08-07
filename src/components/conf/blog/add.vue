@@ -106,7 +106,9 @@ export default {
 			if(res.error==0){
 				this.$message.success(res.msg)
 				this.imageUrl = res.data
-				console.log(res.data, " 获取图片路径") // 获取图片路径
+				//this.imageUrl = "http://116.85.25.126:8888/images/upload/1533609865180.png"
+				
+				console.log(this.imageUrl, " 获取图片路径") // 获取图片路径
 			}
 		},
 
@@ -129,6 +131,7 @@ export default {
 			if(res.error==0){
 				this.isShowRichTextEditor = true
 				this.ruleForm = res.data
+				this.imageUrl = res.data.pic
 				if(this.ruleForm.creative == 1){
 					this.ruleForm.creative = true
 				}else{
