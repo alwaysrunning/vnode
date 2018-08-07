@@ -7,28 +7,24 @@
 		<el-form-item label="描述">
 			<el-input v-model="ruleForm.description"></el-input>
 		</el-form-item>
-		<!-- <el-form-item label="图片" prop="picture">
+		<el-form-item label="图片" prop="picture">
 			<el-col :span="5">
 				<el-upload
 				class="avatar-uploader"
-				action="//active.yunhou.com/api/image/upload"
-				:data="fileParams"
-				:with-credentials="true"
-				:before-upload="beforeAvatarUpload"
-				:show-file-list="false"
-				:on-success="handleAvatarSuccess"
-				:on-error="handleAvatarError">
-				<img v-if="formEntity.ad_img" :src="formEntity.ad_img" class="avatar">
+				:http-request="uploadSectionFile"
+				action="https://jsonplaceholder.typicode.com/posts/"
+  				:show-file-list="false">
+				<img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-col>
 			<el-col :span="3">
 				<div class="changePic">点击图片可替换</div>
 			</el-col>
-		</el-form-item> -->
-		<el-form-item label="图片" prop="picture">
+		</el-form-item>
+		<!-- <el-form-item label="图片" prop="picture">
 			<input @change='add_img'  type="file">
-        </el-form-item>
+        </el-form-item> -->
 		<el-form-item label="文章类型" prop="type">
 			<el-select v-model="ruleForm.type" placeholder="请选择博客类型">
 				<el-option label="技术" value="技术"></el-option>
@@ -68,14 +64,21 @@ export default {
 				description: '',
 				type: '技术',
 				creative: false,
-				content: ''
+				content: '',
+				imageUrl:''
 			},
+			fileParams:{
+                security:true
+            },
 			rules: {
 				title: [
 					{ required: true, message: '请输入标题', trigger: 'blur' },
 				],
 				type: [
 					{ required: true, message: '请选择博客类型', trigger: 'change' }
+				],
+				picture:[
+					{ required: true, message: '请上传图片', trigger: 'blur' },
 				]
 			}
 		};
@@ -86,11 +89,16 @@ export default {
             
 		},
 		
-		add_img(event){
+		uploadSectionFile(param){
 			let self = this
 			let reader = new FileReader();
-			let img = event.target.files[0];
-			reader.readAsDataURL(img)
+			let file = param.file
+			let isLt1M = file.size / 1024 < 100;
+            if (!isLt1M) {
+				this.$message.error('上传图片大小不能超过 100kb!');
+				return isLt1M;
+            }
+			reader.readAsDataURL(file)
 			reader.onloadend = function(){
 				self.upload(reader.result)
 			}
@@ -100,6 +108,7 @@ export default {
 			let res = await this.$ajax.post("/api/upload",{img:result})
 			if(res.error==0){
 				this.$message.success(res.msg)
+				this.ruleForm.imageUrl = res.data
 				console.log(res.data, " 获取图片路径") // 获取图片路径
 			}
 		},
@@ -173,5 +182,25 @@ export default {
 	.el-input__inner{
 		width: 217px
 	}
+}
+</style>
+<style lang="scss">
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
 }
 </style>

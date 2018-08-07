@@ -185,7 +185,6 @@ router.post('/upload', function(req, res, next){
     let time = new Date().getTime()
 
     let frontPath =path.join(__dirname,'../../../../')
-    console.log(frontPath,8888)
     if (!fs.existsSync(frontPath + '/images/')) {
         fs.mkdirSync(frontPath + '/images/');
     }
