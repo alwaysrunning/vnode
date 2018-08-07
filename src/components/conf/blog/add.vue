@@ -7,14 +7,14 @@
 		<el-form-item label="描述">
 			<el-input v-model="ruleForm.description"></el-input>
 		</el-form-item>
-		<el-form-item label="图片" prop="picture">
+		<el-form-item label="图片">
 			<el-col :span="5">
 				<el-upload
 				class="avatar-uploader"
 				:http-request="uploadSectionFile"
-				action="https://jsonplaceholder.typicode.com/posts/"
+				action="http://localhost:8082/api/upload"
   				:show-file-list="false">
-				<img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+				<img v-if="imageUrl" :src="imageUrl" class="avatar">
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-col>
@@ -64,9 +64,9 @@ export default {
 				description: '',
 				type: '技术',
 				creative: false,
-				content: '',
-				imageUrl:''
+				content: ''
 			},
+			imageUrl:'',
 			fileParams:{
                 security:true
             },
@@ -76,9 +76,6 @@ export default {
 				],
 				type: [
 					{ required: true, message: '请选择博客类型', trigger: 'change' }
-				],
-				picture:[
-					{ required: true, message: '请上传图片', trigger: 'blur' },
 				]
 			}
 		};
@@ -108,13 +105,17 @@ export default {
 			let res = await this.$ajax.post("/api/upload",{img:result})
 			if(res.error==0){
 				this.$message.success(res.msg)
-				this.ruleForm.imageUrl = res.data
+				this.imageUrl = res.data
 				console.log(res.data, " 获取图片路径") // 获取图片路径
 			}
 		},
 
 		async save(){
-			let params = Object.assign({id:this.id},this.ruleForm)
+			let params = Object.assign({
+				imageUrl:this.imageUrl,
+				id:this.id
+			},this.ruleForm)
+
 			let res = await this.$ajax.post("/api/save",params)
 			if(res.error==0){
 				this.$message.success(res.msg)
@@ -185,22 +186,33 @@ export default {
 }
 </style>
 <style lang="scss">
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-}
+.avatar-uploader{
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+		width: 178px;
+		height: 178px;
+		img{
+			display:block;
+			width:100%;
+			height:100%;
+			border:none;
+		}
+	}
+	.el-upload:hover {
+		border-color: #409EFF;
+	}
+} 
+
 .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
     height: 178px;
-    line-height: 178px;
+    line-height: 178px!important;
     text-align: center;
 }
 </style>
