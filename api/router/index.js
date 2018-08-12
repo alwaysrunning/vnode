@@ -5,6 +5,8 @@ const logger = require('../log4js/index').logger();
 const sql = require('../../mysql/connect');
 const jwt = require('jsonwebtoken')
 const secret = 'YANGHAITAO'
+const fs = require('fs')
+const path = require('path')
 
 // 处理时间戳
 function handleTime(rows){
@@ -94,7 +96,7 @@ router.post('/save', function(req, res, next){
                     error:500,
                 })
             }else{
-                sql.query(`update blog set title='${data.title}', description='${data.description}', type='${data.type}', creative=${data.creative}, content='${data.content}' where blog_id=${data.id}`,function(err, rows){
+                sql.query(`update blog set pic='${data.imageUrl}', title='${data.title}', description='${data.description}', type='${data.type}', creative=${data.creative}, content='${data.content}' where blog_id=${data.id}`,function(err, rows){
                     if(err){
                         res.json({
                             msg:'更新报错',
@@ -190,6 +192,41 @@ router.post('/login', function(req, res, next){
     })
 })
 
- 
+router.post('/upload', function(req, res, next){
+    let imgData = req.body.img
+    let base64Data = imgData.replace(/^data:image\/\w+;base64,/, ' ')
+    let dataBuffer = new Buffer(base64Data, 'base64')
+    let time = new Date().getTime()
 
+    let frontPath =path.join(__dirname,'../../../../')
+    if (!fs.existsSync(frontPath + '/images/')) {
+        fs.mkdirSync(frontPath + '/images/');
+    }
+    if (!fs.existsSync(frontPath + '/images/upload/')) {
+            fs.mkdirSync(frontPath + '/images/upload/');
+    }
+    fs.writeFile(frontPath + '/images/upload/' + time + '.png', dataBuffer, function (err) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send({ error: 0, msg: '保存成功', data: 'http://116.85.25.126:8888/images/upload/' + time + '.png'})
+        }
+    })
+})
+
+// 获取本机ip地址
+function getIp () {
+    var os = require('os'),
+        iptable = {},
+        ifaces = os.networkInterfaces()
+    for (var dev in ifaces) {
+        ifaces[dev].forEach(function (details, alias) {
+            if ((details.family == 'IPv4') && (details.internal == false)) {
+            // iptable[dev+(alias?':'+alias:'')]=details.address
+            iptable['localIP'] = details.address
+            }
+        })
+    }
+    return iptable.localIP
+}
 module.exports = router
