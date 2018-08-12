@@ -56,16 +56,30 @@ function authToken(req, res, next){
 // })
 
 router.get('/list', function(req, res, next){
-    sql.query('select * from blog order by create_time DESC', function(err, rows){
+    let currentPage = parseInt(req.query.currentPage)
+    let pageSize = parseInt(req.query.pageSize)
+    let start = (currentPage-1)*pageSize
+    sql.query(`select * from blog where title like order by create_time DESC limit ${start}, ${pageSize}`, function(err, rows){
         if(err){
             console.log(err)
             next(err)
         }else{
-            res.json({
-                msg:'',
-                error:0,
-                data:handleTime(rows)
-            })
+            sql.query('select count(*) as total from blog', function(err, row){
+                if(err){
+                    console.log(err)
+                    next(err)
+                }else{
+                    res.json({
+                        msg:'',
+                        error:0,
+                        data:handleTime(rows),
+                        pageSize:pageSize,
+                        currentPage:currentPage,
+                        total:row[0].total
+                    })
+                }
+                
+            }) 
         }
     })
 })
