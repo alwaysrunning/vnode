@@ -61,7 +61,7 @@ router.get('/list', function(req, res, next){
     let currentPage = parseInt(req.query.currentPage)
     let pageSize = parseInt(req.query.pageSize)
     let start = (currentPage-1)*pageSize
-    sql.query(`select * from blog where title like order by create_time DESC limit ${start}, ${pageSize}`, function(err, rows){
+    sql.query(`select * from blog order by create_time DESC limit ${start}, ${pageSize}`, function(err, rows){
         if(err){
             console.log(err)
             next(err)
