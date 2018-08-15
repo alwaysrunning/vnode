@@ -58,7 +58,8 @@ function authToken(req, res, next){
 // })
 
 router.get('/list', function(req, res, next){
-    sql.query('select * from blog order by create_time DESC', function(err, rows){
+    var title = req.query.title
+    sql.query(`select * from blog where title like '%${title}%' order by create_time DESC`, function(err, rows){
         if(err){
             console.log(err)
             next(err)
