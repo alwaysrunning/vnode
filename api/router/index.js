@@ -58,9 +58,9 @@ function authToken(req, res, next){
 // })
 
 router.get('/list', function(req, res, next){
-    let title = req.query.title
-    let currentPage = parseInt(req.query.currentPage)
-    let pageSize = parseInt(req.query.pageSize)
+    let title = req.query.title || ''
+    let currentPage = parseInt(req.query.currentPage) || 1
+    let pageSize = parseInt(req.query.pageSize) || 5
     let start = (currentPage-1)*pageSize
     sql.query(`select * from blog where title like '%${title}%' order by create_time DESC limit ${start}, ${pageSize}`, function(err, rows){
         if(err){
