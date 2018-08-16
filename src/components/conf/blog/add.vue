@@ -12,7 +12,7 @@
 				<el-upload
 				class="avatar-uploader"
 				:http-request="uploadSectionFile"
-				action="http://localhost:8082/api/upload"
+				:action="uploadImg"
   				:show-file-list="false">
 				<img v-if="imageUrl" :src="imageUrl" class="avatar">
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -49,10 +49,16 @@
 </template>
 
 <script>
+import {url} from '@/config'
 import customQuillEditor from '@/components/common/Quilleditor'
 export default {
 	components:{
 		customQuillEditor
+	},
+	computed:{
+		uploadImg: function(){
+			return url + '/api/upload'
+		}
 	},
     data() {
 		return {
@@ -159,6 +165,7 @@ export default {
 		}
 	},
 	mounted(){
+		console.log(url,999)
 		if(this.id){
 			this.getInfo(this.id)
 			return

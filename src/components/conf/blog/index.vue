@@ -116,6 +116,9 @@ export default {
 			},this.searchs)
 			let res = await this.$ajax.get("/api/list",params)
 			this.list = res.data
+			this.pageSize = res.pageSize
+			this.currentPage = res.currentPage
+			this.total = res.total
 		},
 
 		handleCurrentChange: _.debounce(function(v){

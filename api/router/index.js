@@ -115,21 +115,21 @@ router.post('/save', function(req, res, next){
                 })
             }
         })
-        return
+    }else{
+        sql.query(`insert into blog(title,description,type,creative,content) values('${data.title}','${data.description}','${data.type}',${data.creative},'${data.content}')`, function(err, rows){
+            if (err) {
+                res.json({
+                    msg:'创建blog失败',
+                    error:-100,
+                })
+            }else {
+                res.json({
+                    msg:'新建blog成功',
+                    error:0,
+                })
+            }
+        })
     }
-    sql.query(`insert into blog(title,description,type,creative,content) values('${data.title}','${data.description}','${data.type}',${data.creative},'${data.content}')`, function(err, rows){
-        if (err) {
-            res.json({
-                msg:'创建blog失败',
-                error:-100,
-            })
-        }else {
-            res.json({
-                msg:'新建blog成功',
-                error:0,
-            })
-        }
-    })
 })
 
 router.get('/getInfo', function(req, res, next){
@@ -210,7 +210,7 @@ router.post('/upload', function(req, res, next){
         if (err) {
             res.send(err)
         } else {
-            res.send({ error: 0, msg: '保存成功', data: 'http://116.85.25.126:8888/images/upload/' + time + '.png'})
+            res.send({ error: 0, msg: '保存成功', data: 'http://116.85.25.126/images/upload/' + time + '.png'})
         }
     })
 })
