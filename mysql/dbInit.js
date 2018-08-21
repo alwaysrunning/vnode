@@ -26,12 +26,28 @@ const blog = `CREATE TABLE IF NOT EXISTS blog (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
 
 
+const classify = `CREATE TABLE IF NOT EXISTS classify (
+    type_id mediumint(8) unsigned NOT NULL auto_increment,
+    type_name varchar(255) NOT NULL,
+    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (type_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
+
+
 var init = function(){
     sql.connect(function(err){
         if(err){
             console.log('数据库链接失败')
         }else{
             console.log('成功链接数据库')
+            sql.query(user, function(err){
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log('classify表创建成功')
+                }
+            })
+
             sql.query(user, function(err){
                 if(err){
                     console.log(err)
@@ -46,13 +62,13 @@ var init = function(){
                     console.log('blog表创建成功')
                 }
             })
-            sql.query('insert into user set ?',{name:NAME, password:PASSWORD, rankval:RANK}, function (err) {
-                if(err){
-                    console.log(err)
-                }else{
-                    console.log('用户表初始化成功')
-                }
-            })
+            // sql.query('insert into user set ?',{name:NAME, password:PASSWORD, rankval:RANK}, function (err) {
+            //     if(err){
+            //         console.log(err)
+            //     }else{
+            //         console.log('用户表初始化成功')
+            //     }
+            // })
 
             // sql.query('insert into blog(title, description, content, type, url) VALUES(?,?,?,?,?)',['title','description','content','技术','www'], function (err) {
             //     if(err){

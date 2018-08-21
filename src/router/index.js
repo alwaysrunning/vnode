@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import blog from './blog'
+import classify from './classify'
 Vue.use(Router)
 
 export default new Router({
@@ -18,6 +19,7 @@ export default new Router({
 			component: resolve => require(['@/components/conf/login/index.vue'], resolve),
 			hidden:true
 		},
-		...blog
+		...blog,
+		...classify,
     ]
 })
