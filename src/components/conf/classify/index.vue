@@ -1,5 +1,12 @@
 <template>
 <div>
+	<section class="mod-search">
+		<el-row :span="24" class="mod-toolbar" :gutter="20">
+			<el-col :span="3">
+				<el-button type="primary" @click="onAdd">添加分类类型</el-button>
+			</el-col>
+		</el-row>
+	</section>
 	<section class="ui-table">
 		<el-table
 			ref="multipleTable"
@@ -9,11 +16,11 @@
 			v-loading="listLoading"
 			@selection-change="handleSelectionChange">
 			<el-table-column width="55" type="selection"></el-table-column>
-			<el-table-column prop="type" label="文章类型" show-overflow-tooltip></el-table-column>
+			<el-table-column prop="type_name" label="文章类型" show-overflow-tooltip></el-table-column>
 			<el-table-column label="操作" fixed="right" min-width="120">
 				<template slot-scope="scope">
-					<span class="operate cursor edit" @click="onEdit(scope.row.blog_id)">编辑</span>
-					<span class="operate del cursor" @click="onDelete(scope.row.blog_id)" >删除</span>
+					<span class="operate cursor edit" @click="onEdit(scope.row.type_id)">编辑</span>
+					<span class="operate del cursor" @click="onDelete(scope.row.type_id)" >删除</span>
 				</template>
 			</el-table-column>
 		</el-table>
