@@ -1,7 +1,7 @@
 <template>
 <div class="mod-block" >	
 	<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleForm">
-		<el-form-item label="博客分类" prop="type">
+		<el-form-item label="博客分类" prop="type_name">
 			<el-input v-model="ruleForm.type_name"></el-input>
 		</el-form-item>
 		<el-col :span="18" style="margin-top:20px" >
@@ -16,27 +16,16 @@
 
 <script>
 import {url} from '@/config'
-import customQuillEditor from '@/components/common/Quilleditor'
 export default {
-	components:{
-		customQuillEditor
-	},
-	computed:{
-		uploadImg: function(){
-			return url + '/api/upload'
-		}
-	},
     data() {
 		return {
 			id:this.$route.query.id || '',
-			isShowRichTextEditor:false,
-			editorOption:{},
 			ruleForm: {
 				type_name: ''
 			},
 			rules: {
-				type: [
-					{ required: true, message: '请选择博客类型', trigger: 'change' }
+				type_name: [
+					{ required: true, message: '请选择博客类型', trigger: 'blur' }
 				]
 			}
 		};
@@ -44,37 +33,17 @@ export default {
 	methods: {
 		async save(){
 			let params = Object.assign({
-				imageUrl:this.imageUrl,
-				id:this.id
+				id:this.id || 0
 			},this.ruleForm)
 
-			let res = await this.$ajax.post("/api/save",params)
+			let res = await this.$ajax.post("/api/classSave",params)
 			if(res.error==0){
 				this.$message.success(res.msg)
 				this.$router.push({name:'分类列表'});
 			}
 		},
-		
-		async getInfo(id){
-			let params = Object.assign({},{id:id})
-			let res = await this.$ajax.get("/api/getInfo",params)
-			if(res.error==0){
-				this.isShowRichTextEditor = true
-				this.ruleForm = res.data
-				this.imageUrl = res.data.pic
-				if(this.ruleForm.creative == 1){
-					this.ruleForm.creative = true
-				}else{
-					this.ruleForm.creative = false
-				}
-			}
-		},
 
 		submitForm(formName) {
-			if(!this.ruleForm.content){
-				this.$message.error("大爷，您还没写博客呢")
-				return
-			}
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
 					this.save()
@@ -86,6 +55,14 @@ export default {
 		},
 		resetForm() {
 			this.$router.push({name:'分类列表', params:{}});
+		},
+
+		async getInfo(id){
+			let params = Object.assign({},{id:id})
+			let res = await this.$ajax.get("/api/classGetInfo",params)
+			if(res.error==0){
+				this.ruleForm = res.data
+			}
 		}
 	},
 	mounted(){

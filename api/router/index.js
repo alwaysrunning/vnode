@@ -41,7 +41,7 @@ function authToken(req, res, next){
     }
 }
 
-
+// 分类模块
 router.get('/classlist', function(req, res, next){
     sql.query('select * from classify order by create_time DESC', function(err, rows){
         if(err){
@@ -57,6 +57,86 @@ router.get('/classlist', function(req, res, next){
     })
 })
 
+router.post('/classSave', function(req, res, next){
+    let data = req.body
+    if(data.id){
+        sql.query(`select * from classify where type_id=${data.id}`, function(err, rows){
+            if(err){
+                res.json({
+                    msg:'查找报错',
+                    error:500,
+                })
+            }else{
+                sql.query(`update classify set type_name='${data.type_name}' where type_id=${data.id}`,function(err, rows){
+                    if(err){
+                        res.json({
+                            msg:'更新报错',
+                            error:500,
+                        })
+                    }else{
+                        if(rows){
+                            res.json({
+                                msg:'保存成功',
+                                error:0,
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }else{
+        sql.query(`insert into classify(type_name) values('${data.type_name}')`, function(err, rows){
+            if (err) {
+                res.json({
+                    msg:'增加分类失败',
+                    error:-100,
+                })
+            }else {
+                res.json({
+                    msg:'增加分类成功',
+                    error:0,
+                })
+            }
+        })
+    }
+})
+
+router.get('/classGetInfo', function(req, res, next){
+    sql.query(`select * from classify where type_id =${req.query.id}`, function(err, rows){
+        if (err) {
+            res.status(500)
+            res.json({
+                msg:'',
+                error:500,
+            })
+        }else {
+            res.json({
+                msg:'',
+                error:0,
+                data:rows[0]
+            })
+        }
+    })
+})
+
+router.post('/classDelete', function(req, res, next){
+    sql.query(`delete from classify where type_id =${req.body.id}`, function(err, rows){
+        if (err) {
+            res.status(500)
+            res.json({
+                msg:'删除分类失败',
+                error:500,
+            })
+        }else {
+            res.json({
+                msg:'成功删除',
+                error:0,
+            })
+        }
+    })
+})
+
+// 博客模块
 router.get('/list', function(req, res, next){
     let title = req.query.title || ''
     let currentPage = parseInt(req.query.currentPage) || 1
@@ -142,7 +222,7 @@ router.get('/getInfo', function(req, res, next){
             })
         }else {
             res.json({
-                msg:'新建blog成功',
+                msg:'',
                 error:0,
                 data:rows[0]
             })
