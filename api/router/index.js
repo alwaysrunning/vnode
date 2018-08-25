@@ -196,7 +196,7 @@ router.post('/save', function(req, res, next){
             }
         })
     }else{
-        sql.query(`insert into blog(title,description,type,creative,content) values('${data.title}','${data.description}','${data.type}',${data.creative},'${data.content}')`, function(err, rows){
+        sql.query(`insert into blog(title,description,type,content) values('${data.title}','${data.description}','${data.type}','${data.content}')`, function(err, rows){
             if (err) {
                 res.json({
                     msg:'创建blog失败',
