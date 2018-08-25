@@ -55,4 +55,7 @@ export default {
 .ql-editor{
     height:400px
 }
+.ql-container{
+    height: 300px;
+}
 </style>

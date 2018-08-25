@@ -19,7 +19,6 @@ const blog = `CREATE TABLE IF NOT EXISTS blog (
     content longtext NOT NULL,
     type varchar(36) NOT NULL,
     pic longtext,
-    creative mediumint(6) NOT NULL,
     create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (blog_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`

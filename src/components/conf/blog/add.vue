@@ -35,9 +35,9 @@
 				</el-option>
 			</el-select>
 		</el-form-item>
-		<el-form-item label="是否原创">
+		<!-- <el-form-item label="是否原创">
 			<el-switch v-model="ruleForm.creative"></el-switch>
-		</el-form-item>
+		</el-form-item> -->
 		<el-col :span="22" :offset="1">
 			<custom-quill-editor v-if="isShowRichTextEditor" :defaultContent="ruleForm.content" id="pcGoodsInfoId" v-on:passTextContent="getRichTextGoodsInfo">
                             </custom-quill-editor>
@@ -74,7 +74,6 @@ export default {
 				title: '',
 				description: '',
 				type: '',
-				creative: false,
 				content: ''
 			},
 			pic:'',
@@ -141,11 +140,11 @@ export default {
 				this.isShowRichTextEditor = true
 				this.ruleForm = res.data
 				this.pic = res.data.pic
-				if(this.ruleForm.creative == 1){
-					this.ruleForm.creative = true
-				}else{
-					this.ruleForm.creative = false
-				}
+				// if(this.ruleForm.creative == 1){
+				// 	this.ruleForm.creative = true
+				// }else{
+				// 	this.ruleForm.creative = false
+				// }
 			}
 		},
 
