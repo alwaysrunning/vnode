@@ -7,7 +7,7 @@ const user = `CREATE TABLE IF NOT EXISTS user(
     id smallint(6) unsigned NOT NULL auto_increment,
     name varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
-    rank smallint(6) NOT NULL,
+    rankval smallint(6) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
 
@@ -61,7 +61,7 @@ var init = function(){
                     console.log('blog表创建成功')
                 }
             })
-            sql.query('insert into user set ?',{name:NAME, password:PASSWORD, rank:RANK}, function (err) {
+            sql.query('insert into user set ?',{name:NAME, password:PASSWORD, rankval:RANK}, function (err) {
                 if(err){
                     console.log(err)
                 }else{
