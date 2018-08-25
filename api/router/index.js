@@ -177,7 +177,7 @@ router.post('/save', function(req, res, next){
                     error:500,
                 })
             }else{
-                sql.query(`update blog set pic='${data.pic}', title='${data.title}', description='${data.description}', type='${data.type}', content='${data.content}' where blog_id=${data.id}`,function(err, rows){
+                sql.query(`update blog set title='${data.title}', pic='${data.pic}', description='${data.description}', type='${data.type}', content='${data.content}' where blog_id=${data.id}`,function(err, rows){
                     if(err){
                         res.json({
                             msg:'更新报错',
@@ -196,7 +196,7 @@ router.post('/save', function(req, res, next){
             }
         })
     }else{
-        sql.query(`insert into blog(title,description,type,content) values('${data.title}','${data.description}','${data.type}','${data.content}')`, function(err, rows){
+        sql.query(`insert into blog(title, pic, description,type,content) values('${data.title}','${data.pic}', '${data.description}','${data.type}','${data.content}')`, function(err, rows){
             if (err) {
                 res.json({
                     msg:'创建blog失败',
