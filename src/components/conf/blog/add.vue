@@ -14,7 +14,7 @@
 				:http-request="uploadSectionFile"
 				:action="uploadImg"
   				:show-file-list="false">
-				<img v-if="imageUrl" :src="imageUrl" class="avatar">
+				<img v-if="pic" :src="pic" class="avatar">
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-col>
@@ -27,8 +27,12 @@
         </el-form-item> -->
 		<el-form-item label="文章类型" prop="type">
 			<el-select v-model="ruleForm.type" placeholder="请选择博客类型">
-				<el-option label="技术" value="技术"></el-option>
-				<el-option label="文学" value="文学"></el-option>
+				<el-option
+					v-for="item in list"
+					:key="item.type_id"
+					:label="item.type_name"
+					:value="item.type_name">
+				</el-option>
 			</el-select>
 		</el-form-item>
 		<el-form-item label="是否原创">
@@ -62,17 +66,18 @@ export default {
 	},
     data() {
 		return {
+			list:[],
 			id:this.$route.query.id || '',
 			isShowRichTextEditor:false,
 			editorOption:{},
 			ruleForm: {
 				title: '',
 				description: '',
-				type: '技术',
+				type: '',
 				creative: false,
 				content: ''
 			},
-			imageUrl:'',
+			pic:'',
 			fileParams:{
                 security:true
             },
@@ -111,16 +116,14 @@ export default {
 			let res = await this.$ajax.post("/api/upload",{img:result})
 			if(res.error==0){
 				this.$message.success(res.msg)
-				this.imageUrl = res.data
-				//this.imageUrl = "http://116.85.25.126:8888/images/upload/1533609865180.png"
-				
-				console.log(this.imageUrl, " 获取图片路径") // 获取图片路径
+				this.pic = res.data
+				console.log(this.pic, " 获取图片路径") // 获取图片路径
 			}
 		},
 
 		async save(){
 			let params = Object.assign({
-				imageUrl:this.imageUrl,
+				pic:this.pic,
 				id:this.id
 			},this.ruleForm)
 
@@ -137,7 +140,7 @@ export default {
 			if(res.error==0){
 				this.isShowRichTextEditor = true
 				this.ruleForm = res.data
-				this.imageUrl = res.data.pic
+				this.pic = res.data.pic
 				if(this.ruleForm.creative == 1){
 					this.ruleForm.creative = true
 				}else{
@@ -162,10 +165,17 @@ export default {
 		},
 		resetForm() {
 			this.$router.push({name:'我的博客', params:{}});
-		}
+		},
+
+		async getList(){
+			let params = {}
+			let res = await this.$ajax.get("/api/classlist",params)
+			this.list = res.data
+			console.log(this.list,99)
+		},
 	},
 	mounted(){
-		console.log(url,999)
+		this.getList()
 		if(this.id){
 			this.getInfo(this.id)
 			return

@@ -113,7 +113,7 @@ router.get('/classGetInfo', function(req, res, next){
             res.json({
                 msg:'',
                 error:0,
-                data:rows[0]
+                data:handleTime(rows)[0]
             })
         }
     })
@@ -177,7 +177,7 @@ router.post('/save', function(req, res, next){
                     error:500,
                 })
             }else{
-                sql.query(`update blog set pic='${data.imageUrl}', title='${data.title}', description='${data.description}', type='${data.type}', creative=${data.creative}, content='${data.content}' where blog_id=${data.id}`,function(err, rows){
+                sql.query(`update blog set pic='${data.pic}', title='${data.title}', description='${data.description}', type='${data.type}', content='${data.content}' where blog_id=${data.id}`,function(err, rows){
                     if(err){
                         res.json({
                             msg:'更新报错',
@@ -224,7 +224,7 @@ router.get('/getInfo', function(req, res, next){
             res.json({
                 msg:'',
                 error:0,
-                data:rows[0]
+                data:handleTime(rows)[0]
             })
         }
     })
