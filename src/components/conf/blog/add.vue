@@ -14,7 +14,7 @@
 				:http-request="uploadSectionFile"
 				:action="uploadImg"
   				:show-file-list="false">
-				<img v-if="pic" :src="pic" class="avatar">
+				<img v-if="ruleForm.pic" :src="ruleForm.pic" class="avatar">
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-col>
@@ -74,9 +74,9 @@ export default {
 				title: '',
 				description: '',
 				type: '',
-				content: ''
+				content: '',
+				pic:''
 			},
-			pic:'',
 			fileParams:{
                 security:true
             },
@@ -115,17 +115,16 @@ export default {
 			let res = await this.$ajax.post("/api/upload",{img:result})
 			if(res.error==0){
 				this.$message.success(res.msg)
-				this.pic = res.data
-				console.log(this.pic, " 获取图片路径") // 获取图片路径
+				this.ruleForm.pic = res.data
+				console.log(this.ruleForm.pic, " 获取图片路径") // 获取图片路径
 			}
 		},
 
 		async save(){
 			let params = Object.assign({
-				pic:this.pic,
 				id:this.id
 			},this.ruleForm)
-
+			console.log(params,'params')
 			let res = await this.$ajax.post("/api/save",params)
 			if(res.error==0){
 				this.$message.success(res.msg)
