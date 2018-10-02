@@ -16,10 +16,12 @@ app.all('*', function(req,res,next){
     next()
 })
 app.use(cookieParser())
-app.use(bodyParser.urlencoded({extended: false }))
-app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({extended: false }))
+// app.use(bodyParser.json())
 
-app.use(compression()); 
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(compression());
 
 log4js.use(app)
 
