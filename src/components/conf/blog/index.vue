@@ -13,7 +13,7 @@
 				</el-select>
 			</el-col>
 			<el-col :span="4">
-				<el-input v-model="searchs.title" placeholder="请输入题目"></el-input>                  
+				<el-input v-model="searchs.title" placeholder="请输入题目"></el-input>
 			</el-col>
 			<el-col :span="2">
 				<el-button @click="onSearch" type="primary">搜索</el-button>
@@ -46,7 +46,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-col :span="24" class="mod-footer">
+		<el-col v-loading="listLoading" :span="24" class="mod-footer">
 			<el-pagination layout="total, prev, pager, next" @current-change="handleCurrentChange" :page-size="pageSize"
 					:total="total" style="float:right;" :current-page="currentPage">
 			</el-pagination>
@@ -65,14 +65,7 @@ export default {
 				type:'',
 				title:'',
 			},
-			list:[{
-				id:1,
-				title:'webpack构建方案',
-				description:'webpack构建方案具体操作',
-				type:'技术',
-				time:'2018-12-22 12:12:12',
-				url:'www.baidu.com'
-			}],
+			list:[],
 			multipleSelection:[],
 			listLoading:false,
 			pageSize:10,
@@ -110,11 +103,13 @@ export default {
 		},
 
 		async getList(val){
+      this.listLoading = true
 			let params = Object.assign({},{
 				pageSize: this.pageSize,
 				currentPage:val||this.currentPage
 			},this.searchs)
-			let res = await this.$ajax.get("/api/list",params)
+      let res = await this.$ajax.get("/api/list",params)
+      this.listLoading = false
 			this.list = res.data
 			this.pageSize = res.pageSize
 			this.currentPage = res.currentPage

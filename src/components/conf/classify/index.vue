@@ -65,8 +65,10 @@ export default {
 		},
 
 		async getList(val){
-			let params = {}
-			let res = await this.$ajax.get("/api/classlist",params)
+      let params = {}
+      this.listLoading = true
+      let res = await this.$ajax.get("/api/classlist",params)
+      this.listLoading = false
 			this.list = res.data
 		},
 
