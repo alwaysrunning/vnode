@@ -9,7 +9,7 @@
 			<el-input type="password" v-model="ruleForm.password" auto-complete="off"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-button type="primary" @click="submitForm('ruleForm')">hello</el-button>
+			<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
 		</el-form-item>
 	</el-form>
 </div>
